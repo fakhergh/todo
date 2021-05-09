@@ -4,8 +4,15 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon -e js,graphqls",
+    "bcrypt:rebuild": "npm rebuild bcrypt --build-from-source",
+    "prestart": "npm run bcrypt:rebuild && npm run build",
+    "start": "node build/server.js",
+    "dev": "concurrently --kill-others \"npm run watch\" \"npm run watch:build\"",
+    "build": "tsc",
+    "lint:fix": "eslint --fix --ext .ts .",
+    "lint:check": "eslint --ext .ts .",
+    "watch": "tsc --watch",
+    "watch:build": "nodemon build/server.js -e js",
     "docker:mount": "docker-compose up -d"
   },
   "dependencies": {
@@ -21,10 +28,25 @@
     "mongoose": "^5.12.5",
     "mongoose-track": "^0.7.0",
     "morgan": "^1.10.0",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "typescript": "^4.2.4"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/compression": "^1.7.0",
+    "@types/eslint": "^7.2.10",
+    "@types/express": "^4.17.11",
     "@types/graphql-resolvers": "^0.3.0",
+    "@types/jsonwebtoken": "^8.5.1",
+    "@types/morgan": "^1.9.2",
+    "@types/node": "^15.0.2",
+    "@typescript-eslint/eslint-plugin": "^4.22.1",
+    "@typescript-eslint/parser": "^4.22.1",
+    "concurrently": "^6.1.0",
+    "eslint": "^7.26.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.4.0",
     "nodemon": "^2.0.7"
   }
 }
